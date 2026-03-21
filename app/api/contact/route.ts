@@ -9,7 +9,7 @@ export async function POST(req: Request) {
       return NextResponse.json({ error: 'Missing fields' }, { status: 400 });
     }
 
-    const portfolio = getPortfolio();
+    const portfolio = await getPortfolio();
     const messages = portfolio.messages || [];
     
     const newMessage = {
@@ -21,7 +21,7 @@ export async function POST(req: Request) {
     
     messages.unshift(newMessage); // Add to the beginning
     
-    updatePortfolio({ messages });
+    await updatePortfolio({ messages });
 
     return NextResponse.json({ success: true });
   } catch (error) {

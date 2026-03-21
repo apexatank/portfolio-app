@@ -1,6 +1,5 @@
 import { NextResponse } from 'next/server';
-import { promises as fs } from 'fs';
-import path from 'path';
+import { put } from '@vercel/blob';
 
 export async function POST(request: Request) {
   try {
@@ -11,25 +10,18 @@ export async function POST(request: Request) {
       return NextResponse.json({ error: 'No file received.' }, { status: 400 });
     }
 
-    const buffer = Buffer.from(await file.arrayBuffer());
+    // Upload to Vercel Blob
+    // We append the timestamp to ensure uniqueness, though Blob handles some of this
+    const filename = `${Date.now()}-${file.name.replace(/\s+/g, '_')}`;
     
-    // Replace spaces with underscores for clean URLs
-    const filename = Date.now() + '-' + file.name.replace(/\s+/g, '_');
-    const uploadDir = path.join(process.cwd(), 'public', 'uploads');
-    
-    // Ensure directory exists (just in case)
-    try {
-      await fs.access(uploadDir);
-    } catch {
-      await fs.mkdir(uploadDir, { recursive: true });
-    }
+    const blob = await put(filename, file, {
+      access: 'public',
+    });
 
-    await fs.writeFile(path.join(uploadDir, filename), buffer);
-
-    const fileUrl = `/uploads/${filename}`;
-    return NextResponse.json({ url: fileUrl }, { status: 201 });
+    return NextResponse.json({ url: blob.url }, { status: 201 });
   } catch (error: any) {
     console.error("Upload error:", error);
-    return NextResponse.json({ error: 'Upload failed' }, { status: 500 });
+    return NextResponse.json({ error: 'Upload failed: ' + error.message }, { status: 500 });
   }
 }
+

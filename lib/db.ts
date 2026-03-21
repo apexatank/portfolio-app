@@ -1,7 +1,9 @@
 import fs from 'fs';
 import path from 'path';
+import { kv } from '@vercel/kv';
 
 const dbPath = path.join(process.cwd(), 'portfolio-data.json');
+const usersDbPath = path.join(process.cwd(), 'users-data.json');
 
 const defaultData = {
   name: "Alex Smith",
@@ -31,61 +33,122 @@ const defaultData = {
   avatarUrl: ""
 };
 
-export function getPortfolio() {
+const defaultUsers = [
+  { name: 'Demo User', email: 'test@example.com', password: 'password123' }
+];
+
+// Helper to check if we can use KV
+const hasKV = () => {
+  return !!(process.env.KV_REST_API_URL && process.env.KV_REST_API_TOKEN);
+};
+
+export async function getPortfolio() {
+  if (hasKV()) {
+    try {
+      const data = await kv.get('portfolio_data');
+      if (data) return data;
+      
+      // Seed KV if empty but local file exists
+      if (fs.existsSync(dbPath)) {
+        const localData = JSON.parse(fs.readFileSync(dbPath, 'utf8'));
+        await kv.set('portfolio_data', localData);
+        return localData;
+      }
+      
+      // Fallback to default
+      await kv.set('portfolio_data', defaultData);
+      return defaultData;
+    } catch (e) {
+      console.error('Error reading from KV:', e);
+    }
+  }
+
+  // Fallback to local FS for dev or if KV fails
   try {
     if (fs.existsSync(dbPath)) {
       const data = fs.readFileSync(dbPath, 'utf8');
       return JSON.parse(data);
     }
   } catch (e) {
-    console.error('Error reading DB:', e);
+    console.error('Error reading local DB:', e);
   }
   return defaultData;
 }
 
-export function updatePortfolio(data: any) {
-  const current = getPortfolio();
+export async function updatePortfolio(data: any) {
+  const current = await getPortfolio();
   const updated = { ...current, ...data };
-  try {
-    fs.writeFileSync(dbPath, JSON.stringify(updated, null, 2));
-  } catch (e) {
-    console.error('Error writing DB:', e);
+  
+  if (hasKV()) {
+    try {
+      await kv.set('portfolio_data', updated);
+    } catch (e) {
+      console.error('Error writing to KV:', e);
+    }
+  } else {
+    // Only write to FS if not using KV (local development)
+    try {
+      fs.writeFileSync(dbPath, JSON.stringify(updated, null, 2));
+    } catch (e) {
+      console.error('Error writing to local DB:', e);
+    }
   }
   return updated;
 }
 
-// User Database Logic
-const usersDbPath = path.join(process.cwd(), 'users-data.json');
+export async function getUsers() {
+  if (hasKV()) {
+    try {
+      const data = await kv.get('users_data');
+      if (data) return data;
+      
+      // Seed from local
+      if (fs.existsSync(usersDbPath)) {
+        const localUsers = JSON.parse(fs.readFileSync(usersDbPath, 'utf8'));
+        await kv.set('users_data', localUsers);
+        return localUsers;
+      }
+      
+      return defaultUsers;
+    } catch (e) {
+      console.error('Error reading users from KV:', e);
+    }
+  }
 
-const defaultUsers = [
-  { name: 'Demo User', email: 'test@example.com', password: 'password123' }
-];
-
-export function getUsers() {
   try {
     if (fs.existsSync(usersDbPath)) {
       const data = fs.readFileSync(usersDbPath, 'utf8');
       return JSON.parse(data);
     }
   } catch (e) {
-    console.error('Error reading users DB:', e);
+    console.error('Error reading local users DB:', e);
   }
   return defaultUsers;
 }
 
-export function findUser(email: string) {
-  const users = getUsers();
+export async function findUser(email: string) {
+  const users: any = await getUsers();
   return users.find((u: any) => u.email === email);
 }
 
-export function createUser(user: any) {
-  const users = getUsers();
+export async function createUser(user: any) {
+  const users: any = await getUsers();
   users.push(user);
-  try {
-    fs.writeFileSync(usersDbPath, JSON.stringify(users, null, 2));
-  } catch (e) {
-    console.error('Error writing users DB:', e);
+  
+  if (hasKV()) {
+    try {
+      await kv.set('users_data', users);
+    } catch (e) {
+      console.error('Error writing users to KV:', e);
+    }
+  } else {
+    try {
+      fs.writeFileSync(usersDbPath, JSON.stringify(users, null, 2));
+    } catch (e) {
+      console.error('Error writing to local users DB:', e);
+    }
   }
   return user;
 }
+
 

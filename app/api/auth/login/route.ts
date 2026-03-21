@@ -6,7 +6,7 @@ export async function POST(request: Request) {
     const { email, password } = await request.json();
 
     // Look up user in local JSON db
-    const user = findUser(email);
+    const user = await findUser(email);
 
     if (user && user.password === password) {
       const response = NextResponse.json({ 

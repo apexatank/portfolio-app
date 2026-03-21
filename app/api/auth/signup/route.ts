@@ -6,13 +6,13 @@ export async function POST(request: Request) {
     const { name, email, password } = await request.json();
 
     // Check if user exists
-    if (findUser(email)) {
+    if (await findUser(email)) {
       return NextResponse.json({ message: 'User with this email already exists' }, { status: 400 });
     }
 
     // Create the new user
     // Note: In a production app, this password should be hashed securely (e.g., using bcrypt).
-    createUser({ name, email, password });
+    await createUser({ name, email, password });
 
     const response = NextResponse.json({ 
       message: 'Sign up successful',
