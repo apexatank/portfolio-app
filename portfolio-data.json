@@ -1,0 +1,79 @@
+{
+  "name": "Alex Smith",
+  "title": "Creative Professional",
+  "bio": "I'm a passionate creator who loves bringing ideas to life. Whether it's through code, design, video editing, or writing, I focus on delivering high-quality results.",
+  "skills": "Adobe Illustrator, Video Editing, UI/UX Design, Copywriting, React",
+  "projects": [
+    {
+      "title": "asdas",
+      "desc": "dasdasdad",
+      "image": "/uploads/1773983756690-logo-large.png",
+      "category": "das",
+      "link": "http://localhost:3000/dashboard"
+    },
+    {
+      "title": "Storybook",
+      "desc": "Complete visual identity overhaul.",
+      "image": "/uploads/1773921801197-depositphotos_35186549-stock-photo-sample-grunge-red-round-stamp.jpg",
+      "link": "http://localhost:3000/dashboard",
+      "category": "asdasd"
+    }
+  ],
+  "theme": "amber",
+  "avatarUrl": "/uploads/1773987699426-test.png",
+  "socials": {
+    "twitter": "http://localhost:3000/dashboard",
+    "github": "http://localhost:3000/dashboard",
+    "linkedin": "http://localhost:3000/dashboard",
+    "instagram": "http://localhost:3000/dashboard"
+  },
+  "experience": [
+    {
+      "company": "adsasd",
+      "role": "adasdas",
+      "period": "asdasd",
+      "desc": "asdasdasd"
+    },
+    {
+      "company": "asdasd",
+      "role": "asdasd",
+      "period": "adasd",
+      "desc": "asdasdasdasd"
+    },
+    {
+      "company": "hvg",
+      "role": "developer",
+      "period": "2021- 2026",
+      "desc": "asdaasadadad"
+    }
+  ],
+  "testimonials": [
+    {
+      "name": "sadasdas",
+      "role": "dasdasda",
+      "text": "sdasdasdsdasdasdsdasdasdsdasdasdsdasdasdsdasdasdsdasdasdsdasdasdsdasdasdsdasdasdsdasdasdsdasdasdsdasdasdsdasdasdsdasdasdsdasdasdsdasdasdsdasdasdsdasdasdsdasdasdsdasdasdsdasdasdsdasdasd"
+    },
+    {
+      "name": "sadasd",
+      "role": "asdasd",
+      "text": "sdasdasdsdasdasdsdasdasdsdasdasdsdasdasdsdasdasdsdasdasdsdasdasdsdasdasdsdasdasdsdasdasdsdasdasdsdasdasdsdasdasdsdasdasdsdasdasdsdasdasd"
+    },
+    {
+      "name": "asdasd",
+      "role": "asdas",
+      "text": "sdasdasdsdasdasdsdasdasdsdasdasdsdasdasdsdasdasdsdasdasdsdasdasdsdasdasdsdasdasdsdasdasdsdasdasdsdasdasdsdasdasdsdasdasdsdasdasdsdasdasd"
+    },
+    {
+      "name": "sdas",
+      "role": "dadasd",
+      "text": "sdasdasdsdasdasdsdasdasdsdasdasdsdasdasdsdasdasdsdasdasdsdasdasdsdasdasdsdasdasdsdasdasdsdasdasdsdasdasdsdasdasdsdasdasdsdasdasdsdasdasd"
+    },
+    {
+      "name": "deo",
+      "role": "ceo",
+      "text": "sdasdasdsdasdasdsdasdasdsdasdasdsdasdasdsdasdasdsdasdasdsdasdasdsdasdasdsdasdasdsdasdasdsdasdasdsdasdasdsdasdasdsdasdasdsdasdasdsdasdasd"
+    }
+  ],
+  "darkMode": false,
+  "resumeTemplate": "creative"
+}

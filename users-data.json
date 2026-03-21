@@ -1,0 +1,12 @@
+[
+  {
+    "name": "Demo User",
+    "email": "test@example.com",
+    "password": "password123"
+  },
+  {
+    "name": "Apexa Tank",
+    "email": "apexa.tank.hvg@gmail.com",
+    "password": "123456"
+  }
+]
