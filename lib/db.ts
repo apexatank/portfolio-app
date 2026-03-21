@@ -1,6 +1,7 @@
 import fs from 'fs';
 import path from 'path';
 import { kv } from '@vercel/kv';
+import { revalidatePath } from 'next/cache';
 
 const dbPath = path.join(process.cwd(), 'portfolio-data.json');
 const usersDbPath = path.join(process.cwd(), 'users-data.json');
@@ -39,7 +40,7 @@ const defaultUsers = [
 
 // Helper to check if we can use KV
 const hasKV = () => {
-  return !!(process.env.KV_REST_API_URL && process.env.KV_REST_API_TOKEN);
+  return !!(process.env.KV_REDIS_URL);
 };
 
 export async function getPortfolio() {
@@ -47,14 +48,14 @@ export async function getPortfolio() {
     try {
       const data = await kv.get('portfolio_data');
       if (data) return data;
-      
+
       // Seed KV if empty but local file exists
       if (fs.existsSync(dbPath)) {
         const localData = JSON.parse(fs.readFileSync(dbPath, 'utf8'));
         await kv.set('portfolio_data', localData);
         return localData;
       }
-      
+
       // Fallback to default
       await kv.set('portfolio_data', defaultData);
       return defaultData;
@@ -78,7 +79,7 @@ export async function getPortfolio() {
 export async function updatePortfolio(data: any) {
   const current = await getPortfolio();
   const updated = { ...current, ...data };
-  
+
   if (hasKV()) {
     try {
       await kv.set('portfolio_data', updated);
@@ -93,6 +94,14 @@ export async function updatePortfolio(data: any) {
       console.error('Error writing to local DB:', e);
     }
   }
+
+  // Ensure the live site updates instantly by purging the cache
+  try {
+    revalidatePath('/');
+  } catch (err) {
+    console.error('Revalidation error:', err);
+  }
+
   return updated;
 }
 
@@ -101,14 +110,14 @@ export async function getUsers() {
     try {
       const data = await kv.get('users_data');
       if (data) return data;
-      
+
       // Seed from local
       if (fs.existsSync(usersDbPath)) {
         const localUsers = JSON.parse(fs.readFileSync(usersDbPath, 'utf8'));
         await kv.set('users_data', localUsers);
         return localUsers;
       }
-      
+
       return defaultUsers;
     } catch (e) {
       console.error('Error reading users from KV:', e);
@@ -134,7 +143,7 @@ export async function findUser(email: string) {
 export async function createUser(user: any) {
   const users: any = await getUsers();
   users.push(user);
-  
+
   if (hasKV()) {
     try {
       await kv.set('users_data', users);
@@ -150,5 +159,6 @@ export async function createUser(user: any) {
   }
   return user;
 }
+
 
 

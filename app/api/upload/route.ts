@@ -1,5 +1,7 @@
 import { NextResponse } from 'next/server';
 import { put } from '@vercel/blob';
+import { promises as fs } from 'fs';
+import path from 'path';
 
 export async function POST(request: Request) {
   try {
@@ -10,18 +12,33 @@ export async function POST(request: Request) {
       return NextResponse.json({ error: 'No file received.' }, { status: 400 });
     }
 
-    // Upload to Vercel Blob
-    // We append the timestamp to ensure uniqueness, though Blob handles some of this
     const filename = `${Date.now()}-${file.name.replace(/\s+/g, '_')}`;
-    
-    const blob = await put(filename, file, {
-      access: 'public',
-    });
 
-    return NextResponse.json({ url: blob.url }, { status: 201 });
+    // If we have a Vercel Blob token, use cloud storage
+    if (process.env.BLOB_READ_WRITE_TOKEN) {
+      const blob = await put(filename, file, {
+        access: 'public',
+      });
+      return NextResponse.json({ url: blob.url }, { status: 201 });
+    }
+
+    // Local Fallback (for development)
+    const buffer = Buffer.from(await file.arrayBuffer());
+    const uploadDir = path.join(process.cwd(), 'public', 'uploads');
+    
+    try {
+      await fs.access(uploadDir);
+    } catch {
+      await fs.mkdir(uploadDir, { recursive: true });
+    }
+
+    await fs.writeFile(path.join(uploadDir, filename), buffer);
+    return NextResponse.json({ url: `/uploads/${filename}` }, { status: 201 });
+
   } catch (error: any) {
     console.error("Upload error:", error);
     return NextResponse.json({ error: 'Upload failed: ' + error.message }, { status: 500 });
   }
 }
+
 
