@@ -1,6 +1,6 @@
 import fs from 'fs';
 import path from 'path';
-import { kv } from '@vercel/kv';
+import Redis from 'ioredis';
 import { revalidatePath } from 'next/cache';
 
 const dbPath = path.join(process.cwd(), 'portfolio-data.json');
@@ -43,21 +43,31 @@ const hasKV = () => {
   return !!(process.env.KV_REDIS_URL);
 };
 
+// Setup Redis instance natively
+let redisClient: Redis | null = null;
+const getRedisClient = () => {
+  if (hasKV() && !redisClient) {
+    redisClient = new Redis(process.env.KV_REDIS_URL as string);
+  }
+  return redisClient;
+};
+
 export async function getPortfolio() {
-  if (hasKV()) {
+  const kv = getRedisClient();
+  if (kv) {
     try {
-      const data = await kv.get('portfolio_data');
-      if (data) return data;
+      const dataStr = await kv.get('portfolio_data');
+      if (dataStr) return JSON.parse(dataStr);
 
       // Seed KV if empty but local file exists
       if (fs.existsSync(dbPath)) {
         const localData = JSON.parse(fs.readFileSync(dbPath, 'utf8'));
-        await kv.set('portfolio_data', localData);
+        await kv.set('portfolio_data', JSON.stringify(localData));
         return localData;
       }
 
       // Fallback to default
-      await kv.set('portfolio_data', defaultData);
+      await kv.set('portfolio_data', JSON.stringify(defaultData));
       return defaultData;
     } catch (e) {
       console.error('Error reading from KV:', e);
@@ -81,10 +91,13 @@ export async function updatePortfolio(data: any) {
   const updated = { ...current, ...data };
 
   if (hasKV()) {
-    try {
-      await kv.set('portfolio_data', updated);
-    } catch (e) {
-      console.error('Error writing to KV:', e);
+    const kv = getRedisClient();
+    if (kv) {
+      try {
+        await kv.set('portfolio_data', JSON.stringify(updated));
+      } catch (e) {
+        console.error('Error writing to KV:', e);
+      }
     }
   } else {
     // Only write to FS if not using KV (local development)
@@ -106,15 +119,16 @@ export async function updatePortfolio(data: any) {
 }
 
 export async function getUsers() {
-  if (hasKV()) {
+  const kv = getRedisClient();
+  if (kv) {
     try {
-      const data = await kv.get('users_data');
-      if (data) return data;
+      const dataStr = await kv.get('users_data');
+      if (dataStr) return JSON.parse(dataStr);
 
       // Seed from local
       if (fs.existsSync(usersDbPath)) {
         const localUsers = JSON.parse(fs.readFileSync(usersDbPath, 'utf8'));
-        await kv.set('users_data', localUsers);
+        await kv.set('users_data', JSON.stringify(localUsers));
         return localUsers;
       }
 
@@ -145,10 +159,13 @@ export async function createUser(user: any) {
   users.push(user);
 
   if (hasKV()) {
-    try {
-      await kv.set('users_data', users);
-    } catch (e) {
-      console.error('Error writing users to KV:', e);
+    const kv = getRedisClient();
+    if (kv) {
+      try {
+        await kv.set('users_data', JSON.stringify(users));
+      } catch (e) {
+        console.error('Error writing users to KV:', e);
+      }
     }
   } else {
     try {

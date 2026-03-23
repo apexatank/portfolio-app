@@ -5,6 +5,9 @@ import { Mail, Send } from 'lucide-react';
 import { Button } from '@/components/ui/button';
 import { ScrollReveal } from '@/components/ScrollReveal';
 
+// Safelist for Tailwind: bg-blue-500/10 bg-indigo-600/10 bg-violet-600/10 bg-emerald-600/10 bg-rose-600/10 bg-amber-600/10
+
+
 export function ContactSection({ accentBg, accentText, accentShadow, darkMode = false }: { accentBg: string, accentText: string, accentShadow: string, darkMode?: boolean }) {
   const [formData, setFormData] = useState({ name: '', email: '', message: '' });
   const [status, setStatus] = useState<'idle' | 'loading' | 'success' | 'error'>('idle');

@@ -61,13 +61,13 @@ export default function PortfolioLanding({ portfolio }: { portfolio: any }) {
   };
 
   const accentColor = themeColors[theme] || 'primary';
-  const themeAccentClasses: Record<string, { bg: string, hover: string, text: string, shadow: string, from: string, to: string, lightBg: string, lightBorder: string }> = {
-    blue: { bg: 'bg-blue-500', hover: 'hover:bg-blue-600', text: 'text-blue-500', shadow: 'shadow-blue-500/20', from: 'from-blue-400', to: 'to-sky-300', lightBg: 'bg-blue-50', lightBorder: 'border-blue-100' },
-    indigo: { bg: 'bg-indigo-600', hover: 'hover:bg-indigo-700', text: 'text-indigo-600', shadow: 'shadow-indigo-600/20', from: 'from-indigo-600', to: 'to-indigo-400', lightBg: 'bg-indigo-50', lightBorder: 'border-indigo-100' },
-    violet: { bg: 'bg-violet-600', hover: 'hover:bg-violet-700', text: 'text-violet-600', shadow: 'shadow-violet-600/20', from: 'from-violet-600', to: 'to-violet-400', lightBg: 'bg-violet-50', lightBorder: 'border-violet-100' },
-    emerald: { bg: 'bg-emerald-600', hover: 'hover:bg-emerald-700', text: 'text-emerald-600', shadow: 'shadow-emerald-600/20', from: 'from-emerald-600', to: 'to-emerald-400', lightBg: 'bg-emerald-50', lightBorder: 'border-emerald-100' },
-    rose: { bg: 'bg-rose-600', hover: 'hover:bg-rose-700', text: 'text-rose-600', shadow: 'shadow-rose-600/20', from: 'from-rose-600', to: 'to-rose-400', lightBg: 'bg-rose-50', lightBorder: 'border-rose-100' },
-    amber: { bg: 'bg-amber-600', hover: 'hover:bg-amber-700', text: 'text-amber-600', shadow: 'shadow-amber-600/20', from: 'from-amber-600', to: 'to-amber-400', lightBg: 'bg-amber-50', lightBorder: 'border-amber-100' }
+  const themeAccentClasses: Record<string, { bg: string, hover: string, text: string, hoverText: string, shadow: string, from: string, to: string, lightBg: string, lightBorder: string, glowFrom: string }> = {
+    blue: { bg: 'bg-blue-500', hover: 'hover:bg-blue-600', text: 'text-blue-500', hoverText: 'hover:text-blue-500', shadow: 'shadow-blue-500/20', from: 'from-blue-400', to: 'to-sky-300', lightBg: 'bg-blue-50', lightBorder: 'border-blue-100', glowFrom: 'from-blue-500/5' },
+    indigo: { bg: 'bg-indigo-600', hover: 'hover:bg-indigo-700', text: 'text-indigo-600', hoverText: 'hover:text-indigo-600', shadow: 'shadow-indigo-600/20', from: 'from-indigo-600', to: 'to-indigo-400', lightBg: 'bg-indigo-50', lightBorder: 'border-indigo-100', glowFrom: 'from-indigo-500/5' },
+    violet: { bg: 'bg-violet-600', hover: 'hover:bg-violet-700', text: 'text-violet-600', hoverText: 'hover:text-violet-600', shadow: 'shadow-violet-600/20', from: 'from-violet-600', to: 'to-violet-400', lightBg: 'bg-violet-50', lightBorder: 'border-violet-100', glowFrom: 'from-violet-500/5' },
+    emerald: { bg: 'bg-emerald-600', hover: 'hover:bg-emerald-700', text: 'text-emerald-600', hoverText: 'hover:text-emerald-600', shadow: 'shadow-emerald-600/20', from: 'from-emerald-600', to: 'to-emerald-400', lightBg: 'bg-emerald-50', lightBorder: 'border-emerald-100', glowFrom: 'from-emerald-500/5' },
+    rose: { bg: 'bg-rose-600', hover: 'hover:bg-rose-700', text: 'text-rose-600', hoverText: 'hover:text-rose-600', shadow: 'shadow-rose-600/20', from: 'from-rose-600', to: 'to-rose-400', lightBg: 'bg-rose-50', lightBorder: 'border-rose-100', glowFrom: 'from-rose-500/5' },
+    amber: { bg: 'bg-amber-600', hover: 'hover:bg-amber-700', text: 'text-amber-600', hoverText: 'hover:text-amber-600', shadow: 'shadow-amber-600/20', from: 'from-amber-600', to: 'to-amber-400', lightBg: 'bg-amber-50', lightBorder: 'border-amber-100', glowFrom: 'from-amber-500/5' }
   };
 
   const accent = themeAccentClasses[theme] || themeAccentClasses.blue;
@@ -85,13 +85,13 @@ export default function PortfolioLanding({ portfolio }: { portfolio: any }) {
             <span className={`font-bold text-xl tracking-tight hidden sm:block ${darkMode ? 'text-white' : 'text-slate-900'}`}>Portfolio</span>
           </div>
           <nav className="hidden md:flex items-center gap-6">
-            <Link href="#about" className={`text-sm font-medium transition-colors ${darkMode ? 'text-slate-400 hover:text-white' : 'text-slate-600 hover:' + accent.text}`}>About</Link>
-            <Link href="#skills" className={`text-sm font-medium transition-colors ${darkMode ? 'text-slate-400 hover:text-white' : 'text-slate-600 hover:' + accent.text}`}>Skills</Link>
-            <Link href="#projects" className={`text-sm font-medium transition-colors ${darkMode ? 'text-slate-400 hover:text-white' : 'text-slate-600 hover:' + accent.text}`}>Projects</Link>
+            <Link href="#about" className={`text-sm font-medium transition-colors ${darkMode ? 'text-slate-400 hover:text-white' : 'text-slate-600 ' + accent.hoverText}`}>About</Link>
+            <Link href="#skills" className={`text-sm font-medium transition-colors ${darkMode ? 'text-slate-400 hover:text-white' : 'text-slate-600 ' + accent.hoverText}`}>Skills</Link>
+            <Link href="#projects" className={`text-sm font-medium transition-colors ${darkMode ? 'text-slate-400 hover:text-white' : 'text-slate-600 ' + accent.hoverText}`}>Projects</Link>
           </nav>
           <div className="flex items-center gap-3">
             <Link href="/login">
-              <Button variant="outline" size="sm" className={`hidden sm:inline-flex transition-colors ${darkMode ? 'bg-slate-900 border-slate-800 text-slate-300 hover:bg-slate-800 hover:text-white' : 'bg-white border-slate-200 text-slate-600 hover:' + accent.text}`}>
+              <Button variant="outline" size="sm" className={`hidden sm:inline-flex transition-colors ${darkMode ? 'bg-slate-900 border-slate-800 text-slate-300 hover:bg-slate-800 hover:text-white' : 'bg-white border-slate-200 text-slate-600 ' + accent.hoverText}`}>
                 Login / Edit
               </Button>
             </Link>
@@ -358,22 +358,22 @@ hover:scale-105 active:scale-95`}
             <ScrollReveal delay={0.5}>
               <div className={`flex flex-wrap justify-center gap-6 mt-12 transition-colors ${darkMode ? 'text-slate-400' : 'text-slate-500'}`}>
                 {socials.twitter && (
-                  <Link href={socials.twitter} className={`hover:${accent.text} transition-colors p-2 rounded-full hover:bg-slate-100 dark:hover:bg-slate-900`}>
+                  <Link href={socials.twitter} className={`${accent.hoverText} transition-colors p-2 rounded-full hover:bg-slate-100 dark:hover:bg-slate-900`}>
                     <Twitter className="h-6 w-6" />
                   </Link>
                 )}
                 {socials.github && (
-                  <Link href={socials.github} className={`hover:${accent.text} transition-colors p-2 rounded-full hover:bg-slate-100 dark:hover:bg-slate-900`}>
+                  <Link href={socials.github} className={`${accent.hoverText} transition-colors p-2 rounded-full hover:bg-slate-100 dark:hover:bg-slate-900`}>
                     <Github className="h-6 w-6" />
                   </Link>
                 )}
                 {socials.linkedin && (
-                  <Link href={socials.linkedin} className={`hover:${accent.text} transition-colors p-2 rounded-full hover:bg-slate-100 dark:hover:bg-slate-900`}>
+                  <Link href={socials.linkedin} className={`${accent.hoverText} transition-colors p-2 rounded-full hover:bg-slate-100 dark:hover:bg-slate-900`}>
                     <Linkedin className="h-6 w-6" />
                   </Link>
                 )}
                 {socials.instagram && (
-                  <Link href={socials.instagram} className={`hover:${accent.text} transition-colors p-2 rounded-full hover:bg-slate-100 dark:hover:bg-slate-900`}>
+                  <Link href={socials.instagram} className={`${accent.hoverText} transition-colors p-2 rounded-full hover:bg-slate-100 dark:hover:bg-slate-900`}>
                     <Instagram className="h-6 w-6" />
                   </Link>
                 )}
@@ -576,7 +576,7 @@ hover:scale-105 active:scale-95`}
 
       {/* Contact Section */}
       <section id="contact" className={`py-6 border-t relative overflow-hidden transition-colors ${darkMode ? 'bg-slate-900 border-slate-800 text-white' : 'bg-slate-50 border-slate-100'}`}>
-         <div className={`absolute right-0 top-0 h-full w-1/3 bg-linear-to-l from-${theme === 'blue' ? 'blue' : theme}-500/5 to-transparent`}></div>
+         <div className={`absolute right-0 top-0 h-full w-1/3 bg-linear-to-l ${accent.glowFrom} to-transparent`}></div>
          <ContactSection accentBg={accent.bg} accentText={accent.text} accentShadow={accent.shadow} darkMode={darkMode} />
       </section>
       </main>
@@ -593,11 +593,11 @@ hover:scale-105 active:scale-95`}
             </div>
             
             <div className="flex flex-wrap justify-center gap-6">
-              {socials.twitter && <Link href={socials.twitter} className={`hover:${accent.text} transition-colors p-2 rounded-full hover:bg-slate-100 dark:hover:bg-slate-900`}><Twitter className="h-5 w-5" /></Link>}
-              {socials.github && <Link href={socials.github} className={`hover:${accent.text} transition-colors p-2 rounded-full hover:bg-slate-100 dark:hover:bg-slate-900`}><Github className="h-5 w-5" /></Link>}
-              {socials.linkedin && <Link href={socials.linkedin} className={`hover:${accent.text} transition-colors p-2 rounded-full hover:bg-slate-100 dark:hover:bg-slate-900`}><Linkedin className="h-5 w-5" /></Link>}
-              {socials.instagram && <Link href={socials.instagram} className={`hover:${accent.text} transition-colors p-2 rounded-full hover:bg-slate-100 dark:hover:bg-slate-900`}><Instagram className="h-5 w-5" /></Link>}
-              <Link href="mailto:contact@example.com" className={`hover:${accent.text} transition-colors p-2 rounded-full hover:bg-slate-100 dark:hover:bg-slate-900`}><Mail className="h-5 w-5" /></Link>
+              {socials.twitter && <Link href={socials.twitter} className={`${accent.hoverText} transition-colors p-2 rounded-full hover:bg-slate-100 dark:hover:bg-slate-900`}><Twitter className="h-5 w-5" /></Link>}
+              {socials.github && <Link href={socials.github} className={`${accent.hoverText} transition-colors p-2 rounded-full hover:bg-slate-100 dark:hover:bg-slate-900`}><Github className="h-5 w-5" /></Link>}
+              {socials.linkedin && <Link href={socials.linkedin} className={`${accent.hoverText} transition-colors p-2 rounded-full hover:bg-slate-100 dark:hover:bg-slate-900`}><Linkedin className="h-5 w-5" /></Link>}
+              {socials.instagram && <Link href={socials.instagram} className={`${accent.hoverText} transition-colors p-2 rounded-full hover:bg-slate-100 dark:hover:bg-slate-900`}><Instagram className="h-5 w-5" /></Link>}
+              <Link href="mailto:contact@example.com" className={`${accent.hoverText} transition-colors p-2 rounded-full hover:bg-slate-100 dark:hover:bg-slate-900`}><Mail className="h-5 w-5" /></Link>
             </div>
 
             <div className={`text-[10px] font-black uppercase tracking-widest px-3 py-1 border rounded-lg ${darkMode ? 'border-slate-800 bg-slate-900' : 'border-slate-100 bg-slate-50'}`}>Based in London, UK</div>
@@ -606,7 +606,7 @@ hover:scale-105 active:scale-95`}
           <div className="flex justify-center flex-wrap gap-4 text-xs font-bold uppercase tracking-widest opacity-60">
             <span>© {new Date().getFullYear()} {portfolio.name || 'Anonymous'}</span>
             <span className="hidden sm:inline">•</span>
-            <Link href="/login" className={`hover:${accent.text} transition-colors`}>Admin Login</Link>
+            <Link href="/login" className={`${accent.hoverText} transition-colors`}>Admin Login</Link>
           </div>
         </div>
       </footer>
