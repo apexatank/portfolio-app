@@ -75,5 +75,13 @@
     }
   ],
   "darkMode": false,
-  "resumeTemplate": "creative"
+  "resumeTemplate": "creative",
+  "visibleSections": {
+    "about": true,
+    "experience": true,
+    "skills": true,
+    "projects": true,
+    "testimonials": true,
+    "contact": true
+  }
 }

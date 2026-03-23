@@ -58,7 +58,15 @@ export default function Dashboard() {
     socials: { twitter: '', github: '', linkedin: '', instagram: '' },
     theme: 'blue',
     darkMode: false,
-    resumeTemplate: 'modern'
+    resumeTemplate: 'modern',
+    visibleSections: {
+      about: true,
+      experience: true,
+      skills: true,
+      projects: true,
+      testimonials: true,
+      contact: true
+    }
   });
 
   const [experienceList, setExperienceList] = useState<any[]>([]);
@@ -92,7 +100,15 @@ export default function Dashboard() {
             socials: data.socials || { twitter: '', github: '', linkedin: '', instagram: '' },
             theme: data.theme || 'blue',
             darkMode: data.darkMode || false,
-            resumeTemplate: data.resumeTemplate || 'modern'
+            resumeTemplate: data.resumeTemplate || 'modern',
+            visibleSections: data.visibleSections || {
+              about: true,
+              experience: true,
+              skills: true,
+              projects: true,
+              testimonials: true,
+              contact: true
+            }
           });
 
           setExperienceList(data.experience || []);
@@ -1166,6 +1182,32 @@ export default function Dashboard() {
                        <div className={`pt-6 border-t transition-colors duration-500 ${formData.darkMode ? 'border-slate-800' : 'border-slate-100'}`}>
                         <h3 className={`text-lg mb-4 font-bold ${formData.darkMode ? 'text-white' : 'text-slate-900'}`}>Inbox Overview</h3>
                         <p className={`text-sm mb-4 transition-colors ${formData.darkMode ? 'text-slate-400' : 'text-slate-500'}`}>Total messages received: <span className={`font-bold ${accent.text}`}>{messagesList.length}</span></p>
+                       </div>
+                       
+                       <div className={`pt-6 border-t transition-colors duration-500 ${formData.darkMode ? 'border-slate-800' : 'border-slate-100'}`}>
+                         <h3 className={`text-lg mb-4 font-bold ${formData.darkMode ? 'text-white' : 'text-slate-900'}`}>Section Visibility</h3>
+                         <p className={`text-sm mb-6 ${formData.darkMode ? 'text-slate-400' : 'text-slate-500'}`}>Choose which sections to display on your live portfolio.</p>
+                         <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-4">
+                           {Object.entries(formData.visibleSections).map(([key, value]) => (
+                             <label key={key} className={`flex items-center gap-3 p-4 rounded-xl border-2 transition-all cursor-pointer ${value ? `${accent.border} ${formData.darkMode ? 'bg-slate-800/50' : accent.lightBg}` : `${formData.darkMode ? 'border-slate-800 bg-slate-900' : 'border-slate-200 bg-white'}`}`}>
+                               <input 
+                                 type="checkbox" 
+                                 className="w-5 h-5 rounded border-slate-300 text-primary focus:ring-primary"
+                                 checked={value}
+                                 onChange={(e) => {
+                                   setFormData({
+                                     ...formData,
+                                     visibleSections: {
+                                       ...formData.visibleSections,
+                                       [key]: e.target.checked
+                                     }
+                                   });
+                                 }}
+                               />
+                               <span className={`font-bold capitalize ${formData.darkMode ? 'text-slate-300' : 'text-slate-700'}`}>{key}</span>
+                             </label>
+                           ))}
+                         </div>
                        </div>
                      </div>
                   </div>

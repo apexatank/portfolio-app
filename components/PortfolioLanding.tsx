@@ -72,6 +72,7 @@ export default function PortfolioLanding({ portfolio }: { portfolio: any }) {
 
   const accent = themeAccentClasses[theme] || themeAccentClasses.blue;
   const darkMode = portfolio.darkMode || false;
+  const vSec = portfolio.visibleSections || { about: true, experience: true, skills: true, projects: true, testimonials: true, contact: true };
 
   return (
     <div className={`flex flex-col min-h-screen transition-colors duration-500 ${darkMode ? 'dark bg-slate-950 text-slate-100 selection:bg-primary/40' : 'bg-slate-50 text-slate-900 selection:bg-primary/20'}`}>
@@ -85,9 +86,9 @@ export default function PortfolioLanding({ portfolio }: { portfolio: any }) {
             <span className={`font-bold text-xl tracking-tight hidden sm:block ${darkMode ? 'text-white' : 'text-slate-900'}`}>Portfolio</span>
           </div>
           <nav className="hidden md:flex items-center gap-6">
-            <Link href="#about" className={`text-sm font-medium transition-colors ${darkMode ? 'text-slate-400 hover:text-white' : 'text-slate-600 ' + accent.hoverText}`}>About</Link>
-            <Link href="#skills" className={`text-sm font-medium transition-colors ${darkMode ? 'text-slate-400 hover:text-white' : 'text-slate-600 ' + accent.hoverText}`}>Skills</Link>
-            <Link href="#projects" className={`text-sm font-medium transition-colors ${darkMode ? 'text-slate-400 hover:text-white' : 'text-slate-600 ' + accent.hoverText}`}>Projects</Link>
+            {vSec.about && <Link href="#about" className={`text-sm font-medium transition-colors ${darkMode ? 'text-slate-400 hover:text-white' : 'text-slate-600 ' + accent.hoverText}`}>About</Link>}
+            {vSec.skills && <Link href="#skills" className={`text-sm font-medium transition-colors ${darkMode ? 'text-slate-400 hover:text-white' : 'text-slate-600 ' + accent.hoverText}`}>Skills</Link>}
+            {vSec.projects && <Link href="#projects" className={`text-sm font-medium transition-colors ${darkMode ? 'text-slate-400 hover:text-white' : 'text-slate-600 ' + accent.hoverText}`}>Projects</Link>}
           </nav>
           <div className="flex items-center gap-3">
             <Link href="/login">
@@ -384,6 +385,7 @@ hover:scale-105 active:scale-95`}
       </section>
 
       {/* About Section */}
+      {vSec.about && (
       <section id="about" className={`py-6 border-t relative overflow-hidden transition-colors duration-500 ${darkMode ? 'bg-slate-900 border-slate-800' : 'bg-slate-50 border-slate-100'}`}>
         <div className={`absolute -right-20 -top-20 h-96 w-96 rounded-full ${accent.bg} opacity-[0.05] blur-[120px] animate-pulse`}></div>
         <div className={`absolute -left-20 bottom-0 h-80 w-80 rounded-full ${accent.bg} opacity-[0.03] blur-[100px]`}></div>
@@ -417,9 +419,10 @@ hover:scale-105 active:scale-95`}
           </div>
         </div>
       </section>
+      )}
 
       {/* Experience Section */}
-      {experienceList.length > 0 && (
+      {vSec.experience && experienceList.length > 0 && (
         <section id="experience" className={`py-6 border-t relative overflow-hidden transition-colors ${darkMode ? 'bg-slate-950 border-slate-900' : 'bg-white border-slate-100'}`}>
           <div className={`absolute -left-20 top-1/2 -translate-y-1/2 h-96 w-96 rounded-full ${accent.bg} opacity-[0.04] blur-[120px]`}></div>
           <div className={`absolute -right-20 top-10 h-80 w-80 rounded-full ${accent.bg} opacity-[0.02] blur-[100px]`}></div>
@@ -469,7 +472,7 @@ hover:scale-105 active:scale-95`}
       )}
 
       {/* Skills Section */}
-      {skillsList.length > 0 && (
+      {vSec.skills && skillsList.length > 0 && (
         <section id="skills" className={`py-8 border-t relative overflow-hidden transition-colors ${darkMode ? 'bg-slate-950 border-slate-900' : 'bg-white border-slate-100'}`}>
           <div className={`absolute right-[5%] top-1/2 h-16 w-16 ${accent.text} opacity-5 animate-float`}>
             <Sparkles className="h-full w-full" />
@@ -498,7 +501,7 @@ hover:scale-105 active:scale-95`}
       )}
 
       {/* Projects Section */}
-      {projectsList.length > 0 && (
+      {vSec.projects && projectsList.length > 0 && (
         <section id="projects" className={`py-6 border-t relative overflow-hidden transition-colors ${darkMode ? 'bg-slate-900 border-slate-900' : 'bg-slate-50 border-slate-100'}`}>
           <div className={`absolute right-1/4 -bottom-20 h-96 w-96 rounded-full ${accent.bg} opacity-[0.03] blur-[120px]`}></div>
           <div className={`absolute left-0 top-0 h-64 w-64 rounded-full ${accent.bg} opacity-[0.02] blur-[80px]`}></div>
@@ -548,7 +551,7 @@ hover:scale-105 active:scale-95`}
       )}
 
       {/* Testimonials Section */}
-      {testimonialsList.length > 0 && (
+      {vSec.testimonials && testimonialsList.length > 0 && (
         <section className={`py-6 border-t overflow-hidden relative transition-colors ${darkMode ? 'bg-slate-950 border-slate-900' : 'bg-white border-slate-100'}`}>
           <div className={`absolute -left-10 -top-10 h-64 w-64 rounded-full ${accent.bg} opacity-[0.03] blur-3xl`}></div>
           <div className="container mx-auto px-4 max-w-7xl text-center relative z-10">
@@ -575,10 +578,12 @@ hover:scale-105 active:scale-95`}
       )}
 
       {/* Contact Section */}
+      {vSec.contact && (
       <section id="contact" className={`py-6 border-t relative overflow-hidden transition-colors ${darkMode ? 'bg-slate-900 border-slate-800 text-white' : 'bg-slate-50 border-slate-100'}`}>
          <div className={`absolute right-0 top-0 h-full w-1/3 bg-linear-to-l ${accent.glowFrom} to-transparent`}></div>
          <ContactSection accentBg={accent.bg} accentText={accent.text} accentShadow={accent.shadow} darkMode={darkMode} />
       </section>
+      )}
       </main>
 
       {/* Footer */}

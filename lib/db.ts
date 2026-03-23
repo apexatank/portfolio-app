@@ -31,7 +31,15 @@ const defaultData = {
   messages: [],
   theme: "blue",
   darkMode: false,
-  avatarUrl: ""
+  avatarUrl: "",
+  visibleSections: {
+    about: true,
+    experience: true,
+    skills: true,
+    projects: true,
+    testimonials: true,
+    contact: true
+  }
 };
 
 const defaultUsers = [
